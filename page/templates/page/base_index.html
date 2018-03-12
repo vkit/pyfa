@@ -1,0 +1,39 @@
+{% extends "base/dashboard_standardmodel.html" %}
+
+{% block wrapper %}
+<div class="row pull-right">
+  	<div class="col-sm-8">
+    	<button class="btn btn-primary" data-toggle="modal" data-target="#additemmodal">Add Item</button>
+    </div>
+</div>
+<div class="row pull-right">
+    <div class="col-sm-6">
+    	<button class="btn btn-primary" data-toggle="modal" data-target="#additemmodal">Add Item</button>
+    </div>
+</div>
+                <!-- Modal -->
+      <div class="modal fade" id="additemmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only">Close</span>
+              </button>
+              <h4 class="modal-title" id="myModalLabel">Add Item</h4>
+            </div>
+            <div class="modal-body">
+              <form role='form' action="#" method="post">{% csrf_token %}
+                {{form}}
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" action="#" class="btn btn-primary" >Create</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+  <!-- Modal End -->
+{% include "base/generic_data_grid.html" %}
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends "base/dashboard_standardmodel.html" %}
+{% load crispy_forms_tags %}
+{% block wrapper %}
+<button class="btn btn-primary" data-toggle="modal" data-target="#transactionmodal">Add Transation</button>
+<button class="btn btn-primary" data-toggle="modal" data-target="#pagemodal">Add Page</button>
+<!--  Transation Modal -->
+<div class="modal fade" id="transactionmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Add Transation</h4>
+      </div>
+      <div class="modal-body">
+        <form role='form' action="/modeller/create/" method="post">{% csrf_token %}
+        <div>
+          <input type="text" hidden="" name="app" id="app" value="{{app.id.hex}}">
+          {{model_object_form | crispy}}
+          <!-- <label>Transaction name</label>
+          <input type="text" id="name" name="name" required="required" class="form-control col-md-7 col-xs-12">
+          <small>Ex: For Store Master type "StoreMaster" no space allowed</small> -->
+        </div>
+      </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" action="/modeller/create/" class="btn btn-primary" >Create</button>
+        </div>
+      </div>
+  </div>
+</div>
+</form>
+<!-- Modal End -->
+
+<!--  Page Modal -->
+<div class="modal fade" id="pagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Add Pages</h4>
+      </div>
+      <div class="modal-body">
+        <form role='form' action="{% url 'page:create' %}" method="post">{% csrf_token %}
+        <div>
+          <input type="text" hidden="" name="id_app" id="id_app" value="{{app.id.hex}}">
+          {{form_pages | crispy}}
+        </div>
+      </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" action="{% url 'page:create' %}" class="btn btn-primary" >Create</button>
+        </div>
+      </div>
+  </div>
+</div>
+</form>
+<!-- Modal End -->
+<div class="x_panel">
+  <div class="x_title">
+    <h2><i class="fa fa-bars"></i> List of {{app}} App's Transactions and Pages<small>Float left</small></h2>
+    <ul class="nav navbar-right panel_toolbox">
+      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+      </li>
+      <li><a class="close-link"><i class="fa fa-close"></i></a>
+      </li>
+    </ul>
+    <div class="clearfix"></div>
+  </div>
+  <div class="x_content">
+    <div class="" role="tabpanel" data-example-id="togglable-tabs">
+      <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#Transactions" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true"><i class="fa fa-cubes" aria-hidden="true"></i> Transactions</a>
+        </li>
+        <li role="presentation" class=""><a href="#Pages" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false"> <i class="fa fa-file-text-o" aria-hidden="true"></i> Pages</a>
+        </li>
+      </ul>
+      <div id="myTabContent" class="tab-content">
+        <div role="tabpanel" class="tab-pane fade active in" id="Transactions" aria-labelledby="home-tab">
+          {% include "base/generic_multi_data_grid.html" with model=model_matrix.0 table_name='Transactions' %}
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="Pages" aria-labelledby="profile-tab">
+          {% include "base/generic_multi_data_grid.html" with model=model_matrix.1 table_name='Pages' %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% if not model_matrix.0.object_list %}
+<div class="alert alert-info" role="alert" style="text-align: center">Congrats! You have just created your first app. Lets get going by creating new transaction, Click on Add Transaction</div>
+<br>
+{% endif %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#id_app').css({"display" : "none"});
+    $('label[for="id_app"]').hide();
+    $("#id_app").attr("disabled", "disabled"); 
+});
+</script>
+{% endblock %}

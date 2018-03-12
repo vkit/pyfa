@@ -1,0 +1,172 @@
+{% extends "base/dashboard_standardmodel.html" %}
+{% load crispy_forms_tags %}
+{% block wrapper %}
+<link href="../../../static/css/tree.css" rel="stylesheet">
+
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+	<!-- Panel -->
+		<div class="x_panel">
+		  <div class="x_title">
+		    <h2><i class="fa fa-lock"></i> Authentication Levels</h2>
+		    <ul class="nav navbar-right panel_toolbox">
+		      <!-- <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+		      </li>
+		      <li><a class="close-link"><i class="fa fa-close"></i></a>
+		      </li> -->
+		      <li><a href="{% url 'authentication:update_auth' %}" class="btn btn-default btn-lg active" role="button"><i class="fa fa-bolt" aria-hidden="true"></i> Rebuild Authentication</a></li>
+		      <li><a href="" data-toggle="modal" data-target="#addapp" class="btn btn-default btn-lg active" role="button"><i class="fa fa-plus" aria-hidden="true"></i> Add Level</a></li>
+		      
+		    </ul>
+		    <div class="clearfix"></div>
+		  </div>
+		  <!-- Frames -->
+		  <div class="x_content">
+		  {% for template in base_templates %}
+				<div class="col-md-8 col-sm-8 col-xs-4">
+				<h2>{{template}}  <a href="{% url 'authentication:update_base_template' template.pk %}"><i class="fa fa-refresh"></i></a></h2>
+            	<iframe id="myFrame" src="/{{template.dashboard_url}}" height = "400" width="600"></iframe>
+				</div>
+				<!-- Tab Tree -->
+				<div class="col-md-4 col-sm-4 col-xs-4">
+					<h2>Tabs</h2>
+					<div class="tree well">
+
+			            <ul>
+			                {% for tab in template.tab_set.all %}
+			                    <li>
+			                        <span><i class="icon-folder-open"></i><strong> {{tab.name}}</strong></span><a href="{% url 'authentication:delete_tab' tab.pk.hex %}"> <i class="fa fa-times" aria-hidden="true"></i></a>
+			                        <ul>
+			                        {% if tab.subtab_set.all %}
+				                        {% for subtab in tab.subtab_set.all %}
+				                            <li  class="colap">
+				                            	<span><i class="icon-minus-sign"></i>{{subtab.name}}</span><a href="{% url 'authentication:delete_subtab' subtab.pk.hex %}"> <i class="fa fa-times" aria-hidden="true"></i></a>
+				                            </li>
+				                        {% endfor %}
+					                {% endif %}
+						                <li>
+						                    <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#addsubtab">Add Sub Tab</button>
+						                </li>
+			                        </ul>
+			                    </li>
+			            <!-- Add Sub Tab Modal -->
+						<div class="modal fade" id="addsubtab" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						  <div class="modal-dialog">
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <button type="button" class="close" data-dismiss="modal">
+						          <span aria-hidden="true">&times;</span>
+						          <span class="sr-only">Close</span>
+						        </button>
+						        <h4 class="modal-title" id="myModalLabel">Add A New Sub Tab</h4>
+						      </div>
+						      <div class="modal-body">
+						        <form role='form' action="{% url 'authentication:create_subtab' %}" method="post">{% csrf_token %}
+						        <div>
+						          <input type="text" name="tab" value="{{tab.pk.hex}}" hidden="">
+						          {{form_tab | crispy}}
+						        </div>
+						      </div>
+						        <div class="modal-footer">
+						          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						          <button type="submit" action="{% url 'authentication:create_subtab' %}" class="btn btn-primary" >Create</button>
+						        </div>
+						      </div>
+						  </div>
+						</div>
+						</form>
+						<!-- Modal End -->
+			                {% endfor %}
+			                <li>
+			                    <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#addtab" >Add Tab</button>
+			                </li>
+			            <!-- Add Tab Modal -->
+						<div class="modal fade" id="addtab" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						  <div class="modal-dialog">
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <button type="button" class="close" data-dismiss="modal">
+						          <span aria-hidden="true">&times;</span>
+						          <span class="sr-only">Close</span>
+						        </button>
+						        <h4 class="modal-title" id="myModalLabel">Add A New Tab</h4>
+						      </div>
+						      <div class="modal-body">
+						        <form role='form' action="{% url 'authentication:create_tab' %}" method="post">{% csrf_token %}
+						        <div>
+						          <input type="text" name="base_template" value="{{template.pk.hex}}" hidden="">
+						          {{form_tab | crispy}}
+						        </div>
+						      </div>
+						        <div class="modal-footer">
+						          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						          <button type="submit" action="{% url 'authentication:create_tab' %}" class="btn btn-primary" >Create</button>
+						        </div>
+						      </div>
+						  </div>
+						</div>
+						</form>
+						<!-- Modal End -->
+			            </ul>
+			        </div>
+				</div>
+				<!--End Tab Tree -->
+		  {% endfor %}
+		  </div>
+		  <!-- EndFrames -->
+		</div>
+		<!-- End Panel -->
+	</div>
+</div>
+
+<!-- Add Authentication Modal -->
+<div class="modal fade" id="addapp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Add A New Authentication Level</h4>
+      </div>
+      <div class="modal-body">
+        <form role='form' action="{% url 'authentication:create_authentication_level' %}" method="post">{% csrf_token %}
+        <div>
+          {{form | crispy}}
+        </div>
+      </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button  action="{% url 'authentication:create_authentication_level' %}" class="btn btn-primary" >Create</button>
+        </div>
+      </div>
+  </div>
+</div>
+</form>
+<!-- Modal End -->
+
+
+
+<!-- Tree JS -->
+<script>
+$('#colpbut').click(function(){
+    $('.colap').hide('slow');
+});
+$(function () {
+    $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
+    $('.tree li.parent_li > span').on('click', function (e) {
+        var children = $(this).parent('li.parent_li').find(' > ul > li');
+        if (children.is(":visible")) {
+            children.hide('fast');
+            $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+        } else {
+            children.show('fast');
+            $(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+        }
+        e.stopPropagation();
+    });
+});
+
+</script>
+{% endblock %}

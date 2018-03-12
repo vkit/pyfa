@@ -1,0 +1,20 @@
+{% extends "base/dashboard_standardmodel.html" %}
+
+{% block wrapper %}
+<h3>A demonstration of how to access an IFRAME element</h3>
+
+<iframe id="myFrame" src="/admin"></iframe>
+
+<p>Click the button to get the URL of the iframe.</p>
+
+<button onclick="myFunction()">Try it</button>
+
+<p id="demo"></p>
+
+<script>
+function myFunction() {
+    var x = document.getElementById("myFrame").src;
+    document.getElementById("demo").innerHTML = x;
+}
+</script>
+{% endblock %}

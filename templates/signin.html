@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <!-- Meta, title, CSS, favicons, etc. -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Pyfactory Cloud</title>
+
+  <!-- Bootstrap core CSS -->
+
+  <link href="{% static 'vendors/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <link href="{% static 'vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/animate.min.css' %}" rel="stylesheet">
+
+  <!-- Custom styling plus plugins -->
+  <link href="{% static 'css/custom.css' %}"  rel="stylesheet">
+  <link href="{% static 'vendors/iCheck/skins/flat/green.css' %}"  rel="stylesheet">
+
+
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+
+  <!--[if lt IE 9]>
+        <script src="../assets/js/ie8-responsive-file-warning.js"></script>
+        <![endif]-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+</head>
+
+<body style="background:#F7F7F7;">
+
+  <div class="">
+    <a class="hiddenanchor" id="toregister"></a>
+    <a class="hiddenanchor" id="tologin"></a>
+
+    <div id="wrapper">
+      <div id="login" class="animate form">
+
+              <img src="/static/img/standardmodel.png" class="img img-responsive img-rounded" style="margin-right: 92px;">
+            <br>
+        <section class="login_content">
+          <form  class="form-signin" role="form" id="login_form" action="/" method="post">{% csrf_token %}
+            <h1>Standard Model</h1>
+            <h4>Login</h4>
+            <div class="row">
+                <div class="col-lg-12">
+                    {% if messages %}
+                         {% for message in messages %}
+                         <div class="alert alert-warning" role="alert">
+                          <strong><h5>{{ message }}</h5></strong> 
+                        </div>
+                         {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                <input class="form-control" placeholder="Username" name="username" type="username" autofocus>
+            </div>
+            <div class="form-group">
+                <input class="form-control" placeholder="Password" name="password" type="password" value="">
+            </div>
+            <input type="hidden" name="next" value="{{ next }}" />
+            <div>
+              <button class="btn btn-primary-small " type="submit" value="login">Sign in</button>
+              <!-- <a class="reset_pass" href="#">Lost your password?</a> -->
+            </div>
+            <div class="clearfix"></div>
+            <div class="separator">
+              <div class="clearfix"></div>
+              <br />
+              <div>
+                <h1><i class="fa fa-cloud" style="font-size: 26px;"></i> Green Design Labs!</h1>
+
+                <p>©2016 All Rights Reserved. Privacy and Terms</p>
+              </div>
+            </div>
+          </form>
+          <!-- form -->
+        </section>
+        <!-- content -->
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,134 @@
+{% extends 'project_base/admin_base_dashboard.html' %}
+
+{% block wrapper%}
+<!-- <div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header">Rajdeep's dashboard</h3>
+    </div> -->
+    <!-- /.col-lg-12 -->
+<!-- </div> -->
+<!-- /.row 2 -->
+<div class="row">
+    <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-tasks fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{total_items}}</div>
+                        <div>Total Items</div>
+                    </div>
+                </div>
+            </div>
+            <a href="#">
+                <div class="panel-footer">
+                    <span class="pull-left">View Details</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-power-off fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        
+                        <div class="huge">{{total_customers}}</div>
+                        <div>Total Customers</div>
+                    </div>
+                </div>
+            </div>
+            <a href="#">
+                <div class="panel-footer">
+                    <span class="pull-left">View Details</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-shopping-cart fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{total_pending_bills}}</div>
+                        <div>Pending Bills</div>
+                    </div>
+                </div>
+            </div>
+            <a href="#">
+                <div class="panel-footer">
+                    <span class="pull-left">View Details</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-exclamation-triangle fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{total_pending_payment|floatformat:2}}</div>
+                        <div>Pending Amount</div>
+                        <div>Credit crossed bills: {{credit_crossed_bills_count}}</div>
+                    </div>
+                </div>
+            </div>
+            <a href="#">
+                <div class="panel-footer">
+                    <span class="pull-left">View Details</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <h4>Clients and Pending Bills</h4>
+     <div class="col-lg-16 col-md-16 col-sm-16">
+        <div id="morris-bar-chart"></div>
+     </div>
+</div>
+
+    <script src="../../../../static/js/raphael-min.js"></script>
+<script src="../../../../static/js/morris.min.js"></script> 
+
+<script>
+$(document).ready(function(){
+    Morris.Bar({
+        element: 'morris-bar-chart',
+        data: [
+        {% for company in  clients %}
+        {
+            y: '{{company.company_name}}',
+            a: {{company.total_bills}},
+        },
+        {% endfor %}
+        ],
+        xkey: 'y',
+        ykeys: ['a'],
+        labels: ['Total Bills'],
+        hideHover: 'auto',
+        resize: true
+    });
+});
+</script>
+{% endblock %}

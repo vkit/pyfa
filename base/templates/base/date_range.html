@@ -1,0 +1,32 @@
+<link rel="stylesheet" href="../../../static/css/jquery.datepick.css">
+<script src="../../../static/js/jquery-2.0.2.js"></script>
+<script src="../../../static/js/jquery.plugin.js"></script>
+<script src="../../../static/js/jquery.datepick.js"></script>
+<div class="col-md-12 col-sm-12 col-xs-12">
+<form method="post" accept="">
+    {% csrf_token %}
+    <div class="well" style="overflow: auto">
+        <div class="col-md-4">
+           <input class="datepick form-control has-feedback-left" id="start_date" name="start_date" placeholder="Start Date" aria-describedby="inputSuccess2Status" type="text" value="{{start_date}}" required="">
+            <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+            <span id="inputSuccess2Status" class="sr-only">(success)</span>
+        </div>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary btn-lg btn-block btn-sm ">Update</button>
+        </div>
+        <div class="col-md-4">
+            <input class="datepick form-control has-feedback-left" id="end_date" name="end_date" placeholder="End Date" aria-describedby="inputSuccess2Status" type="text" value="{{end_date}}" required="">
+            <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+            <span id="inputSuccess2Status" class="sr-only">(success)</span>                
+        </div>
+    </div>
+    </form>
+</div>
+
+<script>
+  $('#id_date').datepick();
+  $('.datepick').datepick();
+</script>
+<style>
+.datepick-popup{z-index:1151 !important;}
+</style>
